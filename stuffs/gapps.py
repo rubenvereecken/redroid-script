@@ -20,12 +20,12 @@ class Gapps(General):
     non_apks = [
         "defaultetc-common.tar.lz",
         "defaultframework-common.tar.lz",
-        "googlepixelconfig-common.tar.lz"
+        "googlepixelconfig-common.tar.lz",
+        "vending-common.tar.lz"
         ]
     skip = [
         "setupwizarddefault-x86_64.tar.lz",
-        "setupwizardtablet-x86_64.tar.lz",
-        "vending-common.tar.lz"
+        "setupwizardtablet-x86_64.tar.lz"
         ]
 
     def download(self):
