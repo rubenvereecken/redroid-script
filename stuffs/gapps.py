@@ -24,7 +24,8 @@ class Gapps(General):
         ]
     skip = [
         "setupwizarddefault-x86_64.tar.lz",
-        "setupwizardtablet-x86_64.tar.lz"
+        "setupwizardtablet-x86_64.tar.lz",
+        "vending-common.tar.lz"
         ]
 
     def download(self):
