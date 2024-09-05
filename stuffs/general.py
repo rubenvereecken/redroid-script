@@ -14,10 +14,13 @@ class General:
                 bytes = f.read()
                 loc_md5 = hashlib.md5(bytes).hexdigest()
         print((loc_md5, self.act_md5))
-        while not os.path.isfile(self.dl_file_name) or loc_md5 != self.act_md5:
+        attempts = 0
+        MAX_ATTEMPTS = 1
+        while not os.path.isfile(self.dl_file_name) or loc_md5 != self.act_md5 and attempts < MAX_ATTEMPTS:
             if os.path.isfile(self.dl_file_name):
                 os.remove(self.dl_file_name)
                 print_color("md5 mismatches, redownloading now ....",bcolors.YELLOW)
+            attempts += 1
             loc_md5 = download_file(self.dl_link, self.dl_file_name)
             print(loc_md5)
         

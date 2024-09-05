@@ -28,6 +28,7 @@ class Gapps(General):
         ]
 
     def download(self):
+        print(arch)
         print_color("Downloading OpenGapps now .....", bcolors.GREEN)
         super().download()
 
