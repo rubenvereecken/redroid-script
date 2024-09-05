@@ -9,7 +9,7 @@ class Magisk(General):
     download_loc = get_download_dir()
     dl_link = "https://github.com/casualsnek/miscpackages/raw/main/Magisk_Delta_25210_canary_fdac22ba.apk"
     dl_file_name = os.path.join(download_loc, "magisk.apk")
-    act_md5 = "ec98dcee84a47785dc551eb7c465b25f"
+    act_md5 = "2e86c22e364fdf83a8dd8ac0797bd5b0"
     extract_to = "/tmp/magisk_unpack"
     copy_dir = "./magisk"
     magisk_dir = os.path.join(copy_dir, "system", "etc", "init", "magisk")
@@ -23,7 +23,7 @@ service bootanim /system/bin/bootanimation
     oneshot
     ioprio rt 0
     task_profiles MaxPerformance
-
+    
 """
     bootanim_component = """
 on post-fs-data
@@ -46,17 +46,17 @@ on property:sys.boot_completed=1
     mkdir /data/adb/magisk 755
     exec u:r:su:s0 root root -- /sbin/magisk --auto-selinux --boot-complete
     exec -- /system/bin/sh -c "if [ ! -e /data/data/io.github.huskydg.magisk ] ; then pm install /system/etc/init/magisk/magisk.apk ; fi"
-
+   
 on property:init.svc.zygote=restarting
     exec u:r:su:s0 root root -- /sbin/magisk --auto-selinux --zygote-restart
-
+   
 on property:init.svc.zygote=stopped
     exec u:r:su:s0 root root -- /sbin/magisk --auto-selinux --zygote-restart
     """.format(arch=machine[1])
 
     def download(self):
         print_color("Downloading latest Magisk-Delta now .....", bcolors.GREEN)
-        super().download()
+        super().download()   
 
     def copy(self):
         if os.path.exists(self.copy_dir):
@@ -68,18 +68,18 @@ on property:init.svc.zygote=stopped
             os.makedirs(os.path.join(self.copy_dir, "sbin"), exist_ok=True)
 
         print_color("Copying magisk libs now ...", bcolors.GREEN)
-
+        
         lib_dir = os.path.join(self.extract_to, "lib", self.machine[0])
         for parent, dirnames, filenames in os.walk(lib_dir):
             for filename in filenames:
-                o_path = os.path.join(lib_dir, filename)
+                o_path = os.path.join(lib_dir, filename)  
                 filename = re.search('lib(.*)\.so', filename)
                 n_path = os.path.join(self.magisk_dir, filename.group(1))
                 shutil.copyfile(o_path, n_path)
                 run(["chmod", "+x", n_path])
         shutil.copyfile(self.dl_file_name, os.path.join(self.magisk_dir,"magisk.apk") )
 
-        # Updating Magisk from Magisk manager will modify bootanim.rc,
+        # Updating Magisk from Magisk manager will modify bootanim.rc, 
         # So it is necessary to backup the original bootanim.rc.
         bootanim_path = os.path.join(self.copy_dir, "system", "etc", "init", "bootanim.rc")
         gz_filename = os.path.join(bootanim_path)+".gz"
